@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         cvtColor(prev, prev_grey, COLOR_BGR2GRAY);
 
-        ArrayList<TransformParam> prev_to_cur_transform = new ArrayList<TransformParam>();
+        Mat prev_to_cur_transform = new Mat();
 
         int k=1;
         int max_frames = aviGrabber.getLengthInFrames();
@@ -183,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
 
             // weed out bad matches // status = status vector stores 1/0 depending on the detection of flow for the given set of features
             for(int i=0; i < status.rows(); i++) {
-                if(status.row(i).col(0)) {
-                    prev_corner2.push_back(prev_corner[i]);
-                    cur_corner2.push_back(cur_corner[i]);
+                if(status.empty()) {
+                    prev_corner2.push_back(prev_corner);
+                    cur_corner2.push_back(cur_corner);
                 }
             }
 
-            int currOpticalFlow = prev_corner2.size();
+            int currOpticalFlow = prev_corner2.size().get();
             sumOpticalFlow += currOpticalFlow;
             avgOpticalFlow = sumOpticalFlow/k;
             //cout << "Frame: " << k << "/" << max_frames << " - good optical flow: " << currOpticalFlow << " - avg optical flow: " << avgOpticalFlow << endl;
@@ -210,27 +210,24 @@ public class MainActivity extends AppCompatActivity {
                 // imshow("original", prev);
                 //continue;
             }
+
             //write these frames to new video
 
-            //cur.copyTo(lastGoodFrame);
+            // cur.copyTo(lastGoodFrame);
             // cap.set(CV_CAP_PROP_FPS, 30);
             // cout << "FPS1 " << cap.get(CV_CAP_PROP_FPS) << endl;
 
             // decompose T
-            double dx = T.row(0).col(2);
-            double dy = T.row(1).col(2);
-            double da = Math.atan2(T.row(1).col(0), T.row(0).col(0));
+            double dx = T.row(0).col(2).size().get();
+            double dy = T.row(1).col(2).size().get();
+            double da = Math.atan2(T.row(1).col(0).size().get(), T.row(0).col(0).size().get());
             //outputVideo << cur;
             T.copyTo(last_T);
             //left shift by 1
             cur.copyTo(prev);
             cur_grey.copyTo(prev_grey);
-            // imshow("current", cur);
-            // imshow("prev", prev);
-            cout << "dx transform " << dx << endl;
-            cout << "dy transform " << dy << endl;
             // getting the previous-to-current transformation for all frames
-            prev_to_cur_transform.push_back(TransformParam(dx, dy, da));
+            // prev_to_cur_transform.push_back();
 
 
             // 3. Record frames
