@@ -1,0 +1,2 @@
+OpenCV in Android Studio
+http://stackoverflow.com/questions/27406303/opencv-in-android-studio
