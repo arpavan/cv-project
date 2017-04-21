@@ -13,3 +13,6 @@ Running the console application requires C++ and OpenCV 2.4+ installed and confi
 3. Upon successful compilation, execute the program by providing the input video file as a command line argument.
 		E.g. ./videostb-camshake video1.mp4
 4. The processed video will be placed in the same location as the input video with a "Processed" suffix. E.g. video1Processed.avi
+
+
+For the android port the app package will be made available.
